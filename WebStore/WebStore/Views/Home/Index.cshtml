@@ -1,0 +1,18 @@
+﻿@model List<WebStore.Models.Item>
+@{
+    ViewBag.Title = "ASP.NET MVC Music Store";
+}
+<div id="promotion">
+</div>
+<h3><em>Fresh</em> off the grill</h3>
+<ul id="item-list">
+    @foreach (var item in Model)
+    {
+        <li>
+            <a href="@Url.Action("Details", "Store", new { id = item.ItemId })">
+                <img alt="@item.Title" src="@item.ItemArtUrl" />
+                <span>@item.Title</span>
+            </a>
+        </li>
+    }
+</ul>
