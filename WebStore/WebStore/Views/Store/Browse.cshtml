@@ -1,4 +1,5 @@
-﻿@model WebStore.Models.Category
+﻿@using WebStore.Models
+@model WebStore.Models.Category
  
 @{
     ViewBag.Title = "Browse Items";
@@ -6,16 +7,20 @@
  
 <div class="category">
     <h3><em>@Model.Name</em> Items</h3>
- 
+    @ItemList(Model.Items)
+</div>
+
+@helper ItemList(IEnumerable<Item> items)
+{
     <ul id="item-list">
-        @foreach (var item in Model.Items)
+        @foreach (var item in items)
         {
             <li>
-                <a href="@Url.Action("Details", new { id = item.ItemId })">
+                <a href="@Url.Action("Details", "Store", new { id = item.ItemId })">
                     <img alt="@item.Title" src="@item.ItemArtUrl" />
                     <span>@item.Title</span>
                 </a>
             </li>
         }
-    </ul>
-</div>
+    </ul>    
+}

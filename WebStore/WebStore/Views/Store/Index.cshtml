@@ -1,16 +1,33 @@
-﻿@model IEnumerable<WebStore.Models.Category>
+﻿@using WebStore.Models
+@model IEnumerable<WebStore.Models.Item>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h3>Browse Categories</h3>
+<h3>Search items:</h3>
 <p>
-    Select from @Model.Count()
-categories:</p>
+    @using (Html.BeginForm()){   
+         <p>Category: @Html.DropDownList("itemCategory", "All")  
+        &nbsp;  Title: @Html.TextBox("SearchString")  
+         <input type="submit" value="Filter" /></p>
+        }
+</p>
 <ul>
-    @foreach (var category in Model)
-    {
-         <li>@Html.ActionLink(category.Name, "Browse", new { category = category.Name })</li>
-    }
+    @ItemList(Model)
 </ul>
+
+@helper ItemList(IEnumerable<Item> items)
+{
+    <ul id="item-list">
+        @foreach (var item in items)
+        {
+            <li>
+                <a href="@Url.Action("Details", "Store", new { id = item.ItemId })">
+                    <img alt="@item.Title" src="@item.ItemArtUrl" />
+                    <span>@item.Title</span>
+                </a>
+            </li>
+        }
+    </ul>    
+}
