@@ -11,29 +11,15 @@ namespace WebStore.Controllers
     public class StoreController : Controller
     {
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
-        //
-        // GET: /Store/
 
-        //public ActionResult Index()
-        //{
-        //    var items = storeItemsDb.Items.ToList();
-        //    return View(items);
-        //}
-
-        //
-        // GET: /Store/Browse
 
         public ActionResult Browse(string category)
         {
-            // Retrieve Category and its Associated Items from database
             var categoryModel = storeItemsDb.Categories.Include("Items")
                 .Single(g => g.Name == category);
 
             return View(categoryModel);
         }
-
-        //
-        // GET: /Store/Details
 
         public ActionResult Details(int id)
         {

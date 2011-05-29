@@ -111,7 +111,7 @@ namespace WebStore.Models.DataBase
 
             new List<Item>
             {
-                new Item { Title = "For Those About To Music We Salute You", Category = categories.Single(g => g.Name == "Music"), Price = 8.99M, Author = authors.Single(a => a.Name == "AC/DC"), ItemArtUrl = "/Content/Images/placeholder.gif" },
+                new Item { Title = "For Those About To Music We Salute You", Category = categories.Single(g => g.Name == "Music"), Price = 8M, Author = authors.Single(a => a.Name == "AC/DC"), ItemArtUrl = "/Content/Images/placeholder.gif" },
                 new Item { Title = "Let There Be Music", Category = categories.Single(g => g.Name == "Music"), Price = 8.99M, Author = authors.Single(a => a.Name == "AC/DC"), ItemArtUrl = "/Content/Images/placeholder.gif" },
                 new Item { Title = "Balls to the Wall", Category = categories.Single(g => g.Name == "Music"), Price = 8.99M, Author = authors.Single(a => a.Name == "Accept"), ItemArtUrl = "/Content/Images/placeholder.gif" },
                 new Item { Title = "Restless and Wild", Category = categories.Single(g => g.Name == "Music"), Price = 8.99M, Author = authors.Single(a => a.Name == "Accept"), ItemArtUrl = "/Content/Images/placeholder.gif" },
