@@ -48,7 +48,7 @@ namespace WebStore.Controllers
             return PartialView(categories);
         }
 
-        public ActionResult Index(string category, string searchString)
+        public ActionResult Index(string itemCategory, string searchString)
         {
             var categoryList = new List<string>();
 
@@ -68,13 +68,13 @@ namespace WebStore.Controllers
                 items = items.Where(s => s.Title.Contains(searchString));
             }
 
-            if (string.IsNullOrEmpty(category))
+            if (string.IsNullOrEmpty(itemCategory))
             {
                 return View(items);
             }
             else
             {
-                return View(items.Where(x => x.Category.Name == category));
+                return View(items.Where(x => x.Category.Name == itemCategory));
             }
 
         }
