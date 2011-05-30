@@ -15,7 +15,7 @@ namespace WebStore.Controllers
 
         public ActionResult Browse(string category)
         {
-            //Url+querystring
+
             ViewBag.ReturnUrl = HttpContext.Request.RawUrl;
             var categoryModel = storeItemsDb.Categories.Include("Items")
                 .Single(g => g.Name == category);
@@ -25,6 +25,7 @@ namespace WebStore.Controllers
 
         public ActionResult Details(int id)
         {
+            ViewBag.ReturnUrl = HttpContext.Request.RawUrl;
             var item = storeItemsDb.Items.Find(id);
             return View(item);
         }

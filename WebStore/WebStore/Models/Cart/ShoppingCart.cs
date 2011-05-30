@@ -166,27 +166,25 @@ namespace WebStore.Models.Cart
                 }
                 else
                 {
-                    // Generate a new random GUID using System.Guid class
                     Guid tempCartId = Guid.NewGuid();
-                    // Send tempCartId back to client as a cookie
                     context.Session[CartSessionKey] = tempCartId.ToString();
                 }
             }
             return context.Session[CartSessionKey].ToString();
         }
 
-        // When a user has logged in, migrate their shopping cart to
-        // be associated with their username
-        public void MigrateCart(string userName)
-        {
-            var shoppingCart = storeItemsDb.Carts.Where(
-                c => c.CartId == ShoppingCartId);
+        //// When a user has logged in, migrate their shopping cart to
+        //// be associated with their username
+        //public void MigrateCart(string userName)
+        //{
+        //    var shoppingCart = storeItemsDb.Carts.Where(
+        //        c => c.CartId == ShoppingCartId);
 
-            foreach (Cart item in shoppingCart)
-            {
-                item.CartId = userName;
-            }
-            storeItemsDb.SaveChanges();
-        }
+        //    foreach (Cart item in shoppingCart)
+        //    {
+        //        item.CartId = userName;
+        //    }
+        //    storeItemsDb.SaveChanges();
+        //}
     }
 }

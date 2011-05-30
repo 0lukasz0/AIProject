@@ -31,17 +31,9 @@ namespace WebStore.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                    MigrateShoppingCart(model.UserName);
+                    //MigrateShoppingCart(model.UserName);
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
+                    return RedirectToItemList(returnUrl);
                 }
                 else
                 {
@@ -53,14 +45,30 @@ namespace WebStore.Controllers
             return View(model);
         }
 
+        private ActionResult RedirectToItemList(string returnUrl)
+        {
+            if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
         //
         // GET: /Account/LogOff
 
         public ActionResult LogOff()
         {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            cart.EmptyCart();
+
             FormsAuthentication.SignOut();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Store");
         }
 
         //
@@ -85,7 +93,7 @@ namespace WebStore.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    MigrateShoppingCart(model.UserName);
+                    //MigrateShoppingCart(model.UserName);
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }
@@ -153,14 +161,14 @@ namespace WebStore.Controllers
             return View();
         }
 
-        private void MigrateShoppingCart(string UserName)
-        {
-            // Associate shopping cart items with logged-in user
-            var cart = ShoppingCart.GetCart(this.HttpContext);
+        //private void MigrateShoppingCart(string UserName)
+        //{
+        //    // Associate shopping cart items with logged-in user
+        //    var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            cart.MigrateCart(UserName);
-            Session[ShoppingCart.CartSessionKey] = UserName;
-        }
+        //    cart.MigrateCart(UserName);
+        //    Session[ShoppingCart.CartSessionKey] = UserName;
+        //}
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {
