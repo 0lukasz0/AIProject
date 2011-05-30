@@ -31,6 +31,7 @@ namespace WebStore.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
+                    MigrateShoppingCart(model.UserName);
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
                         && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
@@ -84,6 +85,7 @@ namespace WebStore.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
+                    MigrateShoppingCart(model.UserName);
                     FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
                     return RedirectToAction("Index", "Home");
                 }

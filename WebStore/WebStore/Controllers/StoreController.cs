@@ -15,6 +15,8 @@ namespace WebStore.Controllers
 
         public ActionResult Browse(string category)
         {
+            //Url+querystring
+            ViewBag.ReturnUrl = HttpContext.Request.RawUrl;
             var categoryModel = storeItemsDb.Categories.Include("Items")
                 .Single(g => g.Name == category);
 

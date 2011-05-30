@@ -76,20 +76,22 @@ namespace WebStore.Controllers
         // POST: /StoreManager/Edit/5
 
         [HttpPost]
-        public ActionResult Edit(Item item)
+        public ActionResult Edit(int id, FormCollection collection)
         {
+            var model = db.Items.Where(i => i.ItemId == id).Single();
+
             if (ModelState.IsValid)
             {
-                bool zm = TryUpdateModel(item);
+                bool zm = TryUpdateModel(model, null, null, new[] {"Id"});
 
 
-                db.Entry(item).State = EntityState.Modified;
+                db.Entry(model).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", item.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", item.AuthorId);
-            return View(item);
+            ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", model.CategoryId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", model.AuthorId);
+            return View(model);
         }
 
         //

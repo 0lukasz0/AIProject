@@ -10,12 +10,14 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+
     public class ShoppingCartController : Controller
     {
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
         //
         // GET: /ShoppingCart/
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Index(string returnUrl)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
@@ -30,6 +32,7 @@ namespace WebStore.Controllers
         }
         //
         // GET: /Store/AddToCart/5
+        [Authorize]
         public ActionResult AddToCart(int id)
         {
             // Retrieve the item from the database
@@ -47,6 +50,7 @@ namespace WebStore.Controllers
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]
+        [Authorize]
         public ActionResult RemoveFromCart(int id)
         {
             // Remove the item from the cart

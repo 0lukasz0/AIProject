@@ -2,5 +2,5 @@
     @Html.ActionLink(User.Identity.Name+" [Log Off]", "LogOff", "Account")
 }
 else {
-     @Html.ActionLink("Log On", "LogOn", "Account")
+     @Html.ActionLink("Log On", "LogOn", "Account", new { returnUrl = ViewBag.ReturnUrl }, null)
 }
