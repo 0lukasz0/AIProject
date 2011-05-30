@@ -13,7 +13,6 @@ namespace WebStore.Controllers
     public class CheckoutController : Controller
     {
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
-        const string PromoCode = "FREE";
         //
         // GET: /Checkout/
 
@@ -32,51 +31,29 @@ namespace WebStore.Controllers
 
             try
             {
-                if (string.Equals(values["PromoCode"], PromoCode,
-                    StringComparison.OrdinalIgnoreCase) == false)
-                {
-                    return View(order);
-                }
-                else
-                {
-                    order.Username = User.Identity.Name;
-                    order.OrderDate = DateTime.Now;
+                var cart = ShoppingCart.GetCart(this.HttpContext);
+                var test = cart.GetCartItems().Select(x=> x.Item).ToList();
 
-                    //Save Order
-                    storeItemsDb.Orders.Add(order);
-                    storeItemsDb.SaveChanges();
-                    //Process the order
-                    var cart = ShoppingCart.GetCart(this.HttpContext);
-                    cart.CreateOrder(order);
-
-                    return RedirectToAction("Complete",
-                        new { id = order.OrderId });
+                foreach (var item in test)
+                {
+                    var toDelete = storeItemsDb.Items.Where(x => x.ItemId == item.ItemId).Single();
+                    storeItemsDb.Items.Remove(toDelete);
                 }
+
+                storeItemsDb.SaveChanges();
+                return RedirectToAction("Complete");
             }
             catch
             {
-                //Invalid - redisplay with errors
                 return View(order);
             }
         }
 
         //
         // GET: /Checkout/Complete
-        public ActionResult Complete(int id)
+        public ActionResult Complete()
         {
-            // Validate customer owns this order
-            bool isValid = storeItemsDb.Orders.Any(
-                o => o.OrderId == id &&
-                o.Username == User.Identity.Name);
-
-            if (isValid)
-            {
-                return View(id);
-            }
-            else
-            {
-                return View("Error");
-            }
+                return View();
         }
     }
 }
