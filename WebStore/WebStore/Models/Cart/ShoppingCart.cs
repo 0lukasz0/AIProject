@@ -11,7 +11,7 @@ namespace WebStore.Models.Cart
     {
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
         string ShoppingCartId { get; set; }
-        public const string CartSessionKey = "CartId";
+        //public const string CartSessionKey = "CartId";
         public static ShoppingCart GetCart(HttpContextBase context)
         {
             var cart = new ShoppingCart();
@@ -100,19 +100,14 @@ namespace WebStore.Models.Cart
 
         public int GetCount()
         {
-            // Get the count of each item in the cart and sum them up
             int? count = (from cartItems in storeItemsDb.Carts
                           where cartItems.CartId == ShoppingCartId
                           select (int?)cartItems.Count).Sum();
-            // Return 0 if all entries are null
             return count ?? 0;
         }
 
         public decimal GetTotal()
         {
-            // Multiply item price by count of that item to get 
-            // the current price for each of those items in the cart
-            // sum all item price totals to get the cart total
             decimal? total = (from cartItems in storeItemsDb.Carts
                               where cartItems.CartId == ShoppingCartId
                               select (int?)cartItems.Count *
@@ -157,20 +152,9 @@ namespace WebStore.Models.Cart
         // We're using HttpContextBase to allow access to cookies.
         public string GetCartId(HttpContextBase context)
         {
-            if (context.Session[CartSessionKey] == null)
-            {
-                if (!string.IsNullOrWhiteSpace(context.User.Identity.Name))
-                {
-                    context.Session[CartSessionKey] =
-                        context.User.Identity.Name;
-                }
-                else
-                {
-                    Guid tempCartId = Guid.NewGuid();
-                    context.Session[CartSessionKey] = tempCartId.ToString();
-                }
-            }
-            return context.Session[CartSessionKey].ToString();
+            if (!string.IsNullOrEmpty(context.User.Identity.Name))
+                return context.User.Identity.Name;
+            return "0";
         }
 
         //// When a user has logged in, migrate their shopping cart to
