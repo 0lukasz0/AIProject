@@ -16,8 +16,6 @@ namespace WebStore.Controllers
         // GET: /Home/
         private List<Item> GetTopSellingItems(int count)
         {
-            // Group the order details by item and return
-            // the items with the highest count
             return storeItemsDb.Items
                 .OrderByDescending(a => a.OrderDetails.Count())
                 .Take(count)
@@ -26,7 +24,6 @@ namespace WebStore.Controllers
 
         public ActionResult Index()
         {
-            // Get most popular items
             var items = GetTopSellingItems(5);
             return View(items);
         }

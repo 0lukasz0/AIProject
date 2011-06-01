@@ -30,40 +30,34 @@ namespace WebStore.Controllers
             // Return the view
             return View(viewModel);
         }
+
         //
         // GET: /Store/AddToCart/5
         [Authorize]
         public ActionResult AddToCart(int id)
         {
-            // Retrieve the item from the database
             var addedItem = storeItemsDb.Items
                 .Single(item => item.ItemId == id);
 
-            // Add it to the shopping cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             cart.AddToCart(addedItem);
-
-            // Go back to the main store page for more shopping
             return RedirectToAction("Index");
         }
+
         //
         // AJAX: /ShoppingCart/RemoveFromCart/5
         [HttpPost]
         [Authorize]
         public ActionResult RemoveFromCart(int id)
         {
-            // Remove the item from the cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            // Get the name of the item to display confirmation
             string itemName = storeItemsDb.Carts
                 .Single(item => item.RecordId == id).Item.Title;
 
-            // Remove from cart
             int itemCount = cart.RemoveFromCart(id);
 
-            // Display the confirmation message
             var results = new ShoppingCartRemoveViewModel
             {
                 Message = Server.HtmlEncode(itemName) +
@@ -75,8 +69,7 @@ namespace WebStore.Controllers
             };
             return Json(results);
         }
-        //
-        // GET: /ShoppingCart/CartSummary
+
         [ChildActionOnly]
         public ActionResult CartSummary()
         {

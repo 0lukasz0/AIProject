@@ -31,7 +31,6 @@ namespace WebStore.Controllers
             {
                 if (Membership.ValidateUser(model.UserName, model.Password))
                 {
-                    //MigrateShoppingCart(model.UserName);
                     FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
                     return RedirectToItemList(returnUrl);
                 }
@@ -41,7 +40,6 @@ namespace WebStore.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -93,8 +91,7 @@ namespace WebStore.Controllers
 
                 if (createStatus == MembershipCreateStatus.Success)
                 {
-                    //MigrateShoppingCart(model.UserName);
-                    FormsAuthentication.SetAuthCookie(model.UserName, false /* createPersistentCookie */);
+                    FormsAuthentication.SetAuthCookie(model.UserName, false);
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -103,7 +100,6 @@ namespace WebStore.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -125,9 +121,6 @@ namespace WebStore.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                // ChangePassword will throw an exception rather
-                // than return false in certain failure scenarios.
                 bool changePasswordSucceeded;
                 try
                 {
@@ -149,7 +142,6 @@ namespace WebStore.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
             return View(model);
         }
 
@@ -161,14 +153,6 @@ namespace WebStore.Controllers
             return View();
         }
 
-        //private void MigrateShoppingCart(string UserName)
-        //{
-        //    // Associate shopping cart items with logged-in user
-        //    var cart = ShoppingCart.GetCart(this.HttpContext);
-
-        //    cart.MigrateCart(UserName);
-        //    Session[ShoppingCart.CartSessionKey] = UserName;
-        //}
         #region Status Codes
         private static string ErrorCodeToString(MembershipCreateStatus createStatus)
         {

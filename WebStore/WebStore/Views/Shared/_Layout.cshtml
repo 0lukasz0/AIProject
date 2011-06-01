@@ -17,6 +17,7 @@
             <li><a href="/Store/">Search</a></li>
             @Html.Partial("_AdminPartial")
             <li>@{Html.RenderAction("CartSummary", "ShoppingCart");}</li>
+            @*<li>@{Html.RenderAction("WishListSummary", "ShoppingWishList");}</li>*@
             <li>@Html.Partial("_LogOnPartial")</li>
         </ul>
         
