@@ -106,7 +106,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\SubCategory.cs" />
     <Compile Include="Models\Cart\Cart.cs" />
     <Compile Include="Models\Cart\ShoppingWishList.cs" />
     <Compile Include="Models\Cart\WishList.cs" />

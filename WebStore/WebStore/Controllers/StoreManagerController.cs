@@ -20,7 +20,7 @@ namespace WebStore.Controllers
 
         public ViewResult Index()
         {
-            var items = db.Items.Include(a => a.Category).Include(a => a.Author);
+            var items = db.Items.Include(a => a.Category).Include(a => a.SubCategory);
             return View(items.ToList());
         }
 
@@ -39,7 +39,7 @@ namespace WebStore.Controllers
         public ActionResult Create()
         {
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name");
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name");
+            ViewBag.AuthorId = new SelectList(db.Authors, "SubCategoryId", "Name");
             return View();
         } 
 
@@ -57,7 +57,7 @@ namespace WebStore.Controllers
             }
 
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", item.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", item.AuthorId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "SubCategoryId", "Name", item.SubCategoryId);
             return View(item);
         }
         
@@ -68,7 +68,7 @@ namespace WebStore.Controllers
         {
             Item item = db.Items.Find(id);
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", item.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", item.AuthorId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "SubCategoryId", "Name", item.SubCategoryId);
             return View(item);
         }
 
@@ -90,7 +90,7 @@ namespace WebStore.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", model.CategoryId);
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", model.AuthorId);
+            ViewBag.AuthorId = new SelectList(db.Authors, "SubCategoryId", "Name", model.SubCategoryId);
             return View(model);
         }
 
@@ -101,7 +101,7 @@ namespace WebStore.Controllers
         {
             Item item = db.Items.Find(id);
             ViewBag.Category = db.Categories.Find(item.CategoryId);
-            ViewBag.Author = db.Authors.Find(item.AuthorId);
+            ViewBag.Author = db.Authors.Find(item.SubCategoryId);
             return View(item);
         }
 

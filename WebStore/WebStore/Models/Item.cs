@@ -15,22 +15,22 @@ namespace WebStore.Models
         [DisplayName("Category")]
         public int CategoryId { get; set; }
 
-        [DisplayName("Author")]
-        public int AuthorId { get; set; }
+        [DisplayName("SubCategory")]
+        public int SubCategoryId { get; set; }
 
         [Required(ErrorMessage = "An Item Title is required")]
-        [StringLength(160)]
+        [StringLength(200)]
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Price is required")]
-        [Range(0.01, 1000.00, ErrorMessage = "Price must be between 0.01 and 1000.00")]
+        [Range(0.01, 10000.00, ErrorMessage = "Price must be between 0.01 and 10000.00")]
         public decimal Price { get; set; }
 
         [DisplayName("Item Art URL")]
         [StringLength(1024)]
         public string ItemArtUrl { get; set; }
         public virtual Category Category { get; set; }
-        public virtual Author Author { get; set; }
+        public virtual SubCategory SubCategory { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
     }
 }

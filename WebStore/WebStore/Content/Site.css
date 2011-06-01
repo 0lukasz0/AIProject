@@ -24,13 +24,13 @@ body
 {
 	float: left;
 	width: 100%;
-	border-bottom: 1px dotted #5D5A53;
+	border-bottom: 4px dotted #5D5A53;
 	margin-bottom: 10px;
 }
 
 #header h1
 {
-	font-size: 18px;
+	font-size: 22px;
 	float: left;
 	
 	padding: 45px 0px 5px 0px;
@@ -123,8 +123,8 @@ ul#item-list li a span
 	clear: both;
 	padding: 10px;
 	text-align: right;
-	border-top: 1px dotted #8A8575;
-	border-bottom: 1px dotted #8A8575;
+	border-top: 4px dotted #8A8575;
+	border-bottom: 4px dotted #8A8575;
 	font-family: Constantia, Georgia, serif;
 }
 
@@ -141,7 +141,7 @@ ul#navlist li
 
 ul#navlist li a
 {
-	border-left: 1px dotted #8A8575;
+	border-left: 2px dotted #000000;
 	padding: 10px;
 	margin-top: 10px;
 	color: #ffffff;
@@ -218,7 +218,7 @@ a:hover
 {
 	font-family: Constantia, Georgia, serif;
 	list-style-type: none;
-	border-right: #5d5a53 1px dotted;
+	border-right: #5d5a53 4px dotted;
 	padding-right: 10px;
 	margin: 0 25px 0 0;
 	float: left;
