@@ -47,7 +47,7 @@ namespace WebStore.Controllers
 
         [Authorize]
         [HttpPost]
-        public ActionResult RemoveFromWishList(int id)
+        public ActionResult RemoveFromWishList(int id)//id na liście WL
         {
             var wishList = ShoppingWishList.GetWishList(this.HttpContext);
             string itemName = storeItemsDb.WishLists
@@ -77,17 +77,24 @@ namespace WebStore.Controllers
             return PartialView("WishListSummary");
         }
 
-        public ActionResult MoveToCart(int id)
+        public ActionResult MoveToCart(int id)//id itemu
         {
-            var wishList = ShoppingWishList.GetWishList(this.HttpContext);
-            var cart = ShoppingCart.GetCart(this.HttpContext);
-            var item = storeItemsDb.WishLists.Single(i => i.ItemId == id).Item;
+            var dbItem = storeItemsDb.Items.Where(x => x.ItemId == id).SingleOrDefault();
+            if (dbItem != null && dbItem.IsReserved==false)
+            {
 
-            cart.AddToCart(item);
-            wishList.RemoveFromWishList(wishList.GetWishListItems().Single(x => x.RecordId == id).RecordId);
+                var wishList = ShoppingWishList.GetWishList(this.HttpContext);
+                var cart = ShoppingCart.GetCart(this.HttpContext);
+               // var item = storeItemsDb.WishLists.Single(i => i.ItemId == id).Item;
 
-            storeItemsDb.SaveChanges();
-            return RedirectToAction("Index", "ShoppingCart");
+
+                cart.AddToCart(dbItem);
+                wishList.RemoveFromWishList(wishList.GetWishListItems().Single(x => x.ItemId == id).RecordId);
+
+                storeItemsDb.SaveChanges();
+                return RedirectToAction("Index", "ShoppingCart");
+            }
+            return View("Error");
         }
     }
 }

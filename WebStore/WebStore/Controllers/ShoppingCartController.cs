@@ -92,7 +92,9 @@ namespace WebStore.Controllers
             var item = storeItemsDb.Carts.Single(i => i.ItemId == id).Item;
 
             wishList.AddToWishList(item);
-            //wishList.RemoveFromWishList(id);
+            cart.RemoveFromCart(cart.GetCartItems().Single(x => x.ItemId == id).RecordId);
+            var dbItem = storeItemsDb.Items.Where(x => x.ItemId == id).Single();
+            dbItem.IsReserved = false;
             storeItemsDb.SaveChanges();
             return RedirectToAction("Index", "ShoppingCart");
         }

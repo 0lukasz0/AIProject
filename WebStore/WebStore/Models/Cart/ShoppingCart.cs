@@ -41,7 +41,8 @@ namespace WebStore.Models.Cart
             {
                 cartItem.Count++;
             }
-           // cartItem.Item.IsReserved = true;
+            var dbItem = storeItemsDb.Items.Where(x => x.ItemId == item.ItemId).SingleOrDefault();
+            if(dbItem!=null) dbItem.IsReserved = true;
             storeItemsDb.SaveChanges();
         }
 
