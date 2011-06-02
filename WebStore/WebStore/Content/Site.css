@@ -101,6 +101,11 @@ ul#item-list li a span
 	font-weight: bold;
 }
 
+#update-messageWL
+{
+	color: #FF0000;
+	font-weight: bold;
+}
 .button, input[type=submit]
 {
 	clear: both;
