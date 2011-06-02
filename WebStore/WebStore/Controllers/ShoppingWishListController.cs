@@ -51,7 +51,7 @@ namespace WebStore.Controllers
 
             var results = new ShoppingWishListRemoveViewModel
             {
-                Message = Server.HtmlEncode(itemName) +
+                Message = itemName +
                     " has been removed from your wish list.",
                 WishListTotal = wishList.GetTotal(),
                 WishListCount = wishList.GetCount(),

@@ -32,5 +32,8 @@ namespace WebStore.Models
         public virtual Category Category { get; set; }
         public virtual SubCategory SubCategory { get; set; }
         public virtual List<OrderDetail> OrderDetails { get; set; }
+        
+        [DefaultValue(false)]
+        public bool IsReserved { get; set; }
     }
 }

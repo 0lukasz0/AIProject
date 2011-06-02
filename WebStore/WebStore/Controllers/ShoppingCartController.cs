@@ -42,6 +42,8 @@ namespace WebStore.Controllers
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             cart.AddToCart(addedItem);
+            addedItem.IsReserved = true;
+            storeItemsDb.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -53,14 +55,17 @@ namespace WebStore.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            string itemName = storeItemsDb.Carts
-                .Single(item => item.RecordId == id).Item.Title;
+            var itemToDelete = storeItemsDb.Carts
+                .Single(item => item.RecordId == id).Item;
 
             int itemCount = cart.RemoveFromCart(id);
 
+            itemToDelete.IsReserved = false;
+            storeItemsDb.SaveChanges();
+
             var results = new ShoppingCartRemoveViewModel
             {
-                Message = Server.HtmlEncode(itemName) +
+                Message = itemToDelete.Title +
                     " has been removed from your shopping cart.",
                 CartTotal = cart.GetTotal(),
                 CartCount = cart.GetCount(),
