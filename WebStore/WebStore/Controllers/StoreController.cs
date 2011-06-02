@@ -44,20 +44,17 @@ namespace WebStore.Controllers
         {
             var categoryList = new List<string>();
 
-            var categoryQuery = from d in storeItemsDb.Categories
-                           orderby d.Name
-                           select d.Name;
+            var categoryQuery = storeItemsDb.Categories.OrderBy(d => d.Name).Distinct().Select(d => d.Name);
 
-            categoryList.AddRange(categoryQuery.Distinct());
+            categoryList.AddRange(categoryQuery);
             ViewBag.itemCategory = new SelectList(categoryList);
 
-            var items = from m in storeItemsDb.Items
-                         select m;
-            var it = items.ToList();
+            var items = storeItemsDb.Items.Select(m => m).ToList();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                items = items.Where(s => s.Title.Contains(searchString));
+                items = items.Where(s => s.Title.ToLowerInvariant().Contains(searchString.ToLowerInvariant()) ).ToList();
+               // items.Where(s => s.Title.Contains())
             }
 
             if (string.IsNullOrEmpty(itemCategory))
