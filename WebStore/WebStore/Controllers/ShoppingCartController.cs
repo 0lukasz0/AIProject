@@ -44,6 +44,7 @@ namespace WebStore.Controllers
             cart.AddToCart(addedItem);
             addedItem.IsReserved = true;
             storeItemsDb.SaveChanges();
+
             return RedirectToAction("Index");
         }
 
@@ -82,6 +83,18 @@ namespace WebStore.Controllers
             ViewData["CartCount"] = cart.GetCount();
            // ViewBag.CartCount = cart.GetCount();
             return PartialView("CartSummary");
+        }
+
+        public ActionResult MoveToWishList(int id)
+        {
+            var wishList = ShoppingWishList.GetWishList(this.HttpContext);
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var item = storeItemsDb.Carts.Single(i => i.ItemId == id).Item;
+
+            wishList.AddToWishList(item);
+            //wishList.RemoveFromWishList(id);
+            storeItemsDb.SaveChanges();
+            return RedirectToAction("Index", "ShoppingCart");
         }
     }
 }

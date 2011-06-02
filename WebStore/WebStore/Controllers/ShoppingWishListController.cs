@@ -29,6 +29,12 @@ namespace WebStore.Controllers
         [Authorize]
         public ActionResult AddToWishList(int id)
         {
+            if(!storeItemsDb.Items
+                .Any(item => item.ItemId == id))
+            {
+                return View("Error");
+            }
+
             var addedItem = storeItemsDb.Items
                 .Single(item => item.ItemId == id);
 
@@ -71,5 +77,17 @@ namespace WebStore.Controllers
             return PartialView("WishListSummary");
         }
 
+        public ActionResult MoveToCart(int id)
+        {
+            var wishList = ShoppingWishList.GetWishList(this.HttpContext);
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var item = storeItemsDb.WishLists.Single(i => i.ItemId == id).Item;
+
+            cart.AddToCart(item);
+            wishList.RemoveFromWishList(wishList.GetWishListItems().Single(x => x.RecordId == id).RecordId);
+
+            storeItemsDb.SaveChanges();
+            return RedirectToAction("Index", "ShoppingCart");
+        }
     }
 }

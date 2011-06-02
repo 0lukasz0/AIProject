@@ -7,7 +7,7 @@ using WebStore.Models.DataBase;
 
 namespace WebStore.Models.Cart
 {
-    public partial class ShoppingCart
+    public class ShoppingCart
     {
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
         string ShoppingCartId { get; set; }
@@ -41,6 +41,7 @@ namespace WebStore.Models.Cart
             {
                 cartItem.Count++;
             }
+           // cartItem.Item.IsReserved = true;
             storeItemsDb.SaveChanges();
         }
 

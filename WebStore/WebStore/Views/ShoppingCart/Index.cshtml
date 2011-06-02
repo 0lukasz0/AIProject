@@ -16,7 +16,7 @@
                         // Successful requests get here
                         // Update the page elements
                         if (data.ItemCount == 0) {
-                            $('#row-' + data.DeleteId).fadeOut('slow');
+                            $('#row-' + data.DeleteId).fadeOut('fast');
                         } else {
                             $('#item-count-' + data.DeleteId).text(data.ItemCount);
                         }
@@ -34,7 +34,7 @@
 
         // Update the page elements
         if (data.ItemCount == 0) {
-            $('#row-' + data.DeleteId).fadeOut('slow');
+            $('#row-' + data.DeleteId).fadeOut('fast');
         } else {
             $('#item-count-' + data.DeleteId).text(data.ItemCount);
         }
@@ -43,12 +43,13 @@
         $('#cart-status').text('Cart (' + data.CartCount + ')');
     }
 </script>
-<h3>
-    <em>Review</em> your cart:
- </h3>
 <p class="button">
     @Html.ActionLink("Checkout>>", "AddressAndPayment", "Checkout")
 </p>
+<h3>
+    <em>Review</em> your cart:
+ </h3>
+
 <div id="update-message">
 </div>
 <table>
@@ -62,6 +63,7 @@
         <th>
             Quantity
         </th>
+        <th></th>
         <th></th>
     </tr>
     @foreach (var item in Model.CartItems)
@@ -79,11 +81,16 @@
             <td>
                 <a href="#" class="RemoveLink"data-id="@item.RecordId">Remove from cart</a>
             </td>
+            <td>
+                @Html.ActionLink("Move to WL","MoveToWishList", "ShoppingCart", new { id = item.ItemId }, null)
+            </td>
         </tr>
     }
     <tr>
         <td>
             Total
+        </td>
+        <td>
         </td>
         <td>
         </td>
