@@ -21,6 +21,8 @@ namespace WebStore.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
+
+
             // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
             {

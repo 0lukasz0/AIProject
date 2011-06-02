@@ -17,9 +17,7 @@
                         // Update the page elements
                         if (data.ItemCount == 0) {
                             $('#row-' + data.DeleteId).fadeOut('fast');
-                        } else {
-                            $('#item-count-' + data.DeleteId).text(data.ItemCount);
-                        }
+                        } 
                         $('#cart-total').text(data.CartTotal);
                         $('#update-message').text(data.Message);
                         $('#cart-status').text('Cart (' + data.CartCount + ')');
@@ -58,10 +56,7 @@
             Item Name
         </th>
         <th>
-            Price (each)
-        </th>
-        <th>
-            Quantity
+            Price 
         </th>
         <th></th>
         <th></th>
@@ -75,9 +70,6 @@
             <td>
                 @item.Item.Price
             </td>
-            <td id="item-count-@item.RecordId">
-                @item.Count
-            </td>
             <td>
                 <a href="#" class="RemoveLink"data-id="@item.RecordId">Remove from cart</a>
             </td>
@@ -89,8 +81,6 @@
     <tr>
         <td>
             Total
-        </td>
-        <td>
         </td>
         <td>
         </td>

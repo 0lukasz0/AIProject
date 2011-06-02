@@ -31,9 +31,7 @@
         // Update the page elements
         if (data.ItemCount == 0) {
             $('#rowWL-' + data.DeleteId).fadeOut('fast');
-        } else {
-            $('#item-countWL-' + data.DeleteId).text(data.ItemCount);
-        }
+        } 
         $('#wishList-total').text(data.CartTotal);
         $('#update-messageWL').text(data.Message);
         $('#wishList-status').text('WishList (' + data.CartCount + ')');
@@ -53,10 +51,7 @@
             Item Name
         </th>
         <th>
-            Price (each)
-        </th>
-        <th>
-            Quantity
+            Price 
         </th>
         <th></th>
         <th></th>
@@ -70,9 +65,6 @@
             <td>
                 @item.Item.Price
             </td>
-            <td id="item-countWL-@item.RecordId">
-                @item.Count
-            </td>
             <td>
                 <a href="#" class="RemoveLinkWL" data-idWL="@item.RecordId">Remove from wish list</a>
             </td>
@@ -84,8 +76,6 @@
     <tr>
         <td>
             Total
-        </td>
-        <td>
         </td>
         <td>
         </td>
