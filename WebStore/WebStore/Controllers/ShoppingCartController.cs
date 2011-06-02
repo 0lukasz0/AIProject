@@ -75,7 +75,7 @@ namespace WebStore.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            ViewData["CartCount"] = cart.GetCount();
+            ViewBag.CartCount = cart.GetCount();
             return PartialView("CartSummary");
         }
     }
