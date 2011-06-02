@@ -1,2 +1,2 @@
-﻿@{ string caption = "Cart(" + ViewData["CartCount"]+ ")"; }
+﻿@{ string caption = "WishList(" + ViewBag.WishListCount.ToString() + ")"; }
 @Html.ActionLink(caption, "Index", "ShoppingCart", null, new { id = "cart-status" })

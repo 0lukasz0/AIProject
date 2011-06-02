@@ -1,0 +1,51 @@
+﻿@model WebStore.ViewModels.ShoppingWishListViewModel
+<br/>
+<h3>
+    <em>Review</em> your wish list:
+ </h3>
+
+<div id="update-messageWL">
+</div>
+<table>
+    <tr>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Price (each)
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.WishListItems)
+    {
+        <tr id="rowWL-@item.RecordId">
+            <td>
+                @Html.ActionLink(item.Item.Title,"Details", "Store", new { id = item.ItemId }, null)
+            </td>
+            <td>
+                @item.Item.Price
+            </td>
+            <td id="item-countWL-@item.RecordId">
+                @item.Count
+            </td>
+            <td>
+                <a href="#" class="RemoveLinkWL"data-id="@item.RecordId">Remove from wishList</a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            Total
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td id="wishList-total">
+            @Model.WishListTotal
+        </td>
+    </tr>
+</table>
