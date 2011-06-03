@@ -53,35 +53,26 @@ namespace WebStore.Models.Cart
         public int RemoveFromCart(int id)
         {
             var cartItem = storeItemsDb.Carts.Single(
-                cart => cart.CartId == ShoppingCartId
-                && cart.RecordId == id);
-
-            int itemCount = 0;
+                cart => cart.RecordId == id);
+            var itemToDelete = storeItemsDb.Items.Single(it => it.ItemId == cartItem.ItemId);
 
             if (cartItem != null)
             {
-                if (cartItem.Count > 1)
-                {
-                    cartItem.Count--;
-                    itemCount = cartItem.Count;
-                }
-                else
-                {
-                    storeItemsDb.Carts.Remove(cartItem);
-                }
+                itemToDelete.IsReserved = false;
+                storeItemsDb.Carts.Remove(cartItem);
                 storeItemsDb.SaveChanges();
             }
-            return itemCount;
+            return 0;
         }
 
         public void EmptyCart()
         {
             var cartItems = storeItemsDb.Carts.Where(
-                cart => cart.CartId == ShoppingCartId);
+                cart => cart.CartId == ShoppingCartId).Select(x=>x.RecordId);
 
-            foreach (var cartItem in cartItems)
+            foreach (var record in cartItems)
             {
-                storeItemsDb.Carts.Remove(cartItem);
+                RemoveFromCart(record);
             }
             storeItemsDb.SaveChanges();
         }

@@ -82,8 +82,8 @@ namespace WebStore.Controllers
 
             int itemCount = cart.RemoveFromCart(id);
 
-            itemToDelete.IsReserved = false;
-            storeItemsDb.SaveChanges();
+            //itemToDelete.IsReserved = false;
+            //storeItemsDb.SaveChanges();
 
             var results = new ShoppingCartRemoveViewModel
             {
