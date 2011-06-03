@@ -9,6 +9,8 @@ namespace WebStore.Models.Cart
 {
     public class ShoppingCart
     {
+        public static readonly TimeSpan MaxTimeInBasket = TimeSpan.FromSeconds(30);
+
         StoreItemsEntities storeItemsDb = new StoreItemsEntities();
         string ShoppingCartId { get; set; }
    
@@ -37,12 +39,14 @@ namespace WebStore.Models.Cart
                 };
                 storeItemsDb.Carts.Add(cartItem);
             }
-            else
-            {
-                cartItem.Count++;
-            }
+
             var dbItem = storeItemsDb.Items.Where(x => x.ItemId == item.ItemId).SingleOrDefault();
-            if(dbItem!=null) dbItem.IsReserved = true;
+            
+            if(dbItem!=null)
+            {
+                dbItem.IsReserved = true;
+                dbItem.LastInCart = DateTime.Now;
+            }
             storeItemsDb.SaveChanges();
         }
 

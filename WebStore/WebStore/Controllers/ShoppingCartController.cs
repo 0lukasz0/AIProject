@@ -21,16 +21,35 @@ namespace WebStore.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
+            TimeExpiresCheck();
 
-
-            // Set up our ViewModel
             var viewModel = new ShoppingCartViewModel
             {
                 CartItems = cart.GetCartItems(),
                 CartTotal = cart.GetTotal()
             };
-            // Return the view
             return View(viewModel);
+        }
+
+        public void TimeExpiresCheck()
+        {
+            var query = storeItemsDb.Items.Where(x => x.IsReserved).ToList();
+            var allItems = query.Where(x => IsTimeExpired(x)).Select(x => x.ItemId).ToList();
+            var allCarts = new List<int>();
+            foreach (var item in allItems)
+            {
+                allCarts.Add(storeItemsDb.Carts.Where(x=> x.ItemId == item).Select(x=>x.RecordId).Single());
+            }
+            foreach (var tmpcart in allCarts)
+            {
+                RemoveFromCart(tmpcart);
+            }
+            storeItemsDb.SaveChanges();
+        }
+
+        private static bool IsTimeExpired(Item item)
+        {
+            return ((DateTime.Now - item.LastInCart) > ShoppingCart.MaxTimeInBasket);
         }
 
         //

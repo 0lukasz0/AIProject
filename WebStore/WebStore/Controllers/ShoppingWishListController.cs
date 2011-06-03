@@ -18,6 +18,7 @@ namespace WebStore.Controllers
         {
             var wishList = ShoppingWishList.GetWishList(this.HttpContext);
 
+
             var viewModel = new ShoppingWishListViewModel
             {
                 WishListItems = wishList.GetWishListItems(),

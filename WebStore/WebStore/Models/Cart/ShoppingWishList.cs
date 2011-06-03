@@ -35,12 +35,10 @@ namespace WebStore.Models.Cart
                     DateCreated = DateTime.Now
                 };
                 storeItemsDb.WishLists.Add(wishListItem);
+                storeItemsDb.SaveChanges();
             }
-            else
-            {
-                wishListItem.Count++;
-            }
-            storeItemsDb.SaveChanges();
+
+
         }
 
         public int RemoveFromWishList(int id)
