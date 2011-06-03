@@ -21,7 +21,7 @@ namespace WebStore.Controllers
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            TimeExpiresCheck();
+            ShoppingCart.TimeExpiresCheck();
 
             var viewModel = new ShoppingCartViewModel
             {
@@ -31,39 +31,21 @@ namespace WebStore.Controllers
             return View(viewModel);
         }
 
-        public void TimeExpiresCheck()
-        {
-            var query = storeItemsDb.Items.Where(x => x.IsReserved).ToList();
-            var allItems = query.Where(x => IsTimeExpired(x)).Select(x => x.ItemId).ToList();
-            var allCarts = new List<int>();
-            foreach (var item in allItems)
-            {
-                allCarts.Add(storeItemsDb.Carts.Where(x=> x.ItemId == item).Select(x=>x.RecordId).Single());
-            }
-            foreach (var tmpcart in allCarts)
-            {
-                RemoveFromCart(tmpcart);
-            }
-            storeItemsDb.SaveChanges();
-        }
-
-        private static bool IsTimeExpired(Item item)
-        {
-            return ((DateTime.Now - item.LastInCart) > ShoppingCart.MaxTimeInBasket);
-        }
-
         //
         // GET: /Store/AddToCart/5
         [Authorize]
         public ActionResult AddToCart(int id)
         {
-            var addedItem = storeItemsDb.Items
-                .Single(item => item.ItemId == id);
+            var dbItem = storeItemsDb.Items.Where(x => x.ItemId == id).SingleOrDefault();
+            if (dbItem == null || dbItem.IsReserved)
+            {
+                return View("Error");
+            }
 
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            cart.AddToCart(addedItem);
-            addedItem.IsReserved = true;
+            cart.AddToCart(dbItem);
+            dbItem.IsReserved = true;
             storeItemsDb.SaveChanges();
 
             return RedirectToAction("Index");
@@ -80,10 +62,7 @@ namespace WebStore.Controllers
             var itemToDelete = storeItemsDb.Carts
                 .Single(item => item.RecordId == id).Item;
 
-            int itemCount = cart.RemoveFromCart(id);
-
-            //itemToDelete.IsReserved = false;
-            //storeItemsDb.SaveChanges();
+            int itemCount = ShoppingCart.RemoveFromCart(id);
 
             var results = new ShoppingCartRemoveViewModel
             {
@@ -110,10 +89,12 @@ namespace WebStore.Controllers
         {
             var wishList = ShoppingWishList.GetWishList(this.HttpContext);
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            var item = storeItemsDb.Carts.Single(i => i.ItemId == id).Item;
+            var query = storeItemsDb.Carts.SingleOrDefault(i => i.ItemId == id);
+            if (query == null) return View("Error");
 
+            var item = query.Item;
             wishList.AddToWishList(item);
-            cart.RemoveFromCart(cart.GetCartItems().Single(x => x.ItemId == id).RecordId);
+            ShoppingCart.RemoveFromCart(cart.GetCartItems().Single(x => x.ItemId == id).RecordId);
             var dbItem = storeItemsDb.Items.Where(x => x.ItemId == id).Single();
             dbItem.IsReserved = false;
             storeItemsDb.SaveChanges();

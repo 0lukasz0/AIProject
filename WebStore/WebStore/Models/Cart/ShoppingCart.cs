@@ -11,7 +11,7 @@ namespace WebStore.Models.Cart
     {
         public static readonly TimeSpan MaxTimeInBasket = TimeSpan.FromSeconds(30);
 
-        StoreItemsEntities storeItemsDb = new StoreItemsEntities();
+        private static StoreItemsEntities storeItemsDb = new StoreItemsEntities();
         string ShoppingCartId { get; set; }
    
         public static ShoppingCart GetCart(HttpContextBase context)
@@ -50,10 +50,10 @@ namespace WebStore.Models.Cart
             storeItemsDb.SaveChanges();
         }
 
-        public int RemoveFromCart(int id)
+        public static int RemoveFromCart(int recordId)
         {
             var cartItem = storeItemsDb.Carts.Single(
-                cart => cart.RecordId == id);
+                cart => cart.RecordId == recordId);
             var itemToDelete = storeItemsDb.Items.Single(it => it.ItemId == cartItem.ItemId);
 
             if (cartItem != null)
@@ -106,6 +106,27 @@ namespace WebStore.Models.Cart
             if (!string.IsNullOrEmpty(context.User.Identity.Name))
                 return context.User.Identity.Name;
             return "0";
+        }
+
+        public static void TimeExpiresCheck()
+        {
+            var query = storeItemsDb.Items.Where(x => x.IsReserved).ToList();
+            var allItems = query.Where(x => IsTimeExpired(x)).Select(x => x.ItemId).ToList();
+            var allCarts = new List<int>();
+            foreach (var item in allItems)
+            {
+                allCarts.Add(storeItemsDb.Carts.Where(x => x.ItemId == item).Select(x => x.RecordId).Single());
+            }
+            foreach (var tmpcart in allCarts)
+            {
+                ShoppingCart.RemoveFromCart(tmpcart);
+            }
+            storeItemsDb.SaveChanges();
+        }
+
+        private static bool IsTimeExpired(Item item)
+        {
+            return ((DateTime.Now - item.LastInCart) > ShoppingCart.MaxTimeInBasket);
         }
     }
 }

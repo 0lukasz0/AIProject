@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebStore.Models;
+using WebStore.Models.Cart;
 using WebStore.Models.DataBase;
 
 namespace WebStore.Controllers
@@ -19,16 +20,19 @@ namespace WebStore.Controllers
             ViewBag.ReturnUrl = HttpContext.Request.RawUrl;
 
             var categoryModel = storeItemsDb.Categories.Include("Items")
-                .Single(g => g.Name == category);
+                .SingleOrDefault(g => g.Name == category);
 
-            return View(categoryModel);
+            return categoryModel==null ? View("Error") : View(categoryModel);
         }
 
         public ActionResult Details(int id)
         {
-            
+            ShoppingCart.TimeExpiresCheck();
             ViewBag.ReturnUrl = HttpContext.Request.RawUrl;
             var item = storeItemsDb.Items.Find(id);
+
+            if (item == null) return View("Error");
+
             ViewBag.IsReserved = item.IsReserved;
             return View(item);
         }

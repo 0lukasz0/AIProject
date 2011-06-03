@@ -86,8 +86,6 @@ namespace WebStore.Controllers
 
                 var wishList = ShoppingWishList.GetWishList(this.HttpContext);
                 var cart = ShoppingCart.GetCart(this.HttpContext);
-               // var item = storeItemsDb.WishLists.Single(i => i.ItemId == id).Item;
-
 
                 cart.AddToCart(dbItem);
                 wishList.RemoveFromWishList(wishList.GetWishListItems().Single(x => x.ItemId == id).RecordId);
