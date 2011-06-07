@@ -1,43 +1,5 @@
 ﻿@model WebStore.ViewModels.ShoppingWishListViewModel
-<script type="text/javascript">
-    $(function () {
-        // Document.ready -> link up remove event handler
-        $(".RemoveLinkWL").click(function () {
-            // Get the id from the link
-            var recordToDelete = $(this).attr("data-idWL");
-            if (recordToDelete != '') {
-                // Perform the ajax post
-                $.post("/ShoppingWishList/RemoveFromWishList", { "id": recordToDelete },
-                    function (data) {
-                        // Successful requests get here
-                        // Update the page elements
-                        if (data.ItemCount == 0) {
-                            $('#rowWL-' + data.DeleteId).fadeOut('fast');
-                        } else {
-                            $('#item-countWL-' + data.DeleteId).text(data.ItemCount);
-                        }
-                        $('#wishList-total').text(data.WishListTotal);
-                        $('#update-messageWL').text(data.Message);
-                        $('#wishList-status').text('WishList (' + data.WishListCount + ')');
-                    });
-            }
-        });
-    });
-    function handleUpdate() {
-        // Load and deserialize the returned JSON data
-        var json = context.get_data();
-        var data = Sys.Serialization.JavaScriptSerializer.deserialize(json);
-
-        // Update the page elements
-        if (data.ItemCount == 0) {
-            $('#rowWL-' + data.DeleteId).fadeOut('fast');
-        } 
-        $('#wishList-total').text(data.CartTotal);
-        $('#update-messageWL').text(data.Message);
-        $('#wishList-status').text('WishList (' + data.CartCount + ')');
-    }
-</script>
-
+           
 <br/>
 <h3>
     <em>Wishlist</em> content:
@@ -86,3 +48,35 @@
         </td>
     </tr>
 </table>
+
+<script type="text/javascript">
+    $(function () {
+        $(".RemoveLinkWL").click(function () {
+            var recordToDelete = $(this).attr("data-idWL");
+            if (recordToDelete != '') {
+                $.post("/ShoppingWishList/RemoveFromWishList", { "id": recordToDelete },
+                    function (data) {
+                        if (data.ItemCount == 0) {
+                            $('#rowWL-' + data.DeleteId).fadeOut('fast');
+                        } else {
+                            $('#item-countWL-' + data.DeleteId).text(data.ItemCount);
+                        }
+                        $('#wishList-total').text(data.WishListTotal);
+                        $('#update-messageWL').text(data.Message);
+                        $('#wishList-status').text('WishList (' + data.WishListCount + ')');
+                    });
+            }
+        });
+    });
+    function handleUpdate() {
+        var json = context.get_data();
+        var data = Sys.Serialization.JavaScriptSerializer.deserialize(json);
+
+        if (data.ItemCount == 0) {
+            $('#rowWL-' + data.DeleteId).fadeOut('fast');
+        }
+        $('#wishList-total').text(data.CartTotal);
+        $('#update-messageWL').text(data.Message);
+        $('#wishList-status').text('WishList (' + data.CartCount + ')');
+    }
+</script>
