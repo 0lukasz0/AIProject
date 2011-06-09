@@ -23,7 +23,6 @@ namespace WebStore.Models.Cart
 
         public void AddToCart(Item item)
         {
-            // Get the matching cart and item instances
             var cartItem = storeItemsDb.Carts.SingleOrDefault(
                 c => c.CartId == ShoppingCartId
                 && c.ItemId == item.ItemId);
